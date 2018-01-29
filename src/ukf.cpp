@@ -276,6 +276,10 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 //  cout<<"Xsig_pred: "<<Xsig_pred_<<endl;
 
 //  cout<<"Updated Lidar: "<<endl;
+  double NIS = zdiff.transpose()*S.inverse()*zdiff;
+  cout<<"Lidar NIS: "<< NIS<<endl;
+
+
 }
 
 /**
@@ -284,12 +288,10 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
  */
 void UKF::UpdateRadar(MeasurementPackage meas_package) {
   /**
-  TODO:
+ 
+  Modify the state vector, x_, and covariance, P_.
 
-  Complete this function! Use radar data to update the belief about the object's
-  position. Modify the state vector, x_, and covariance, P_.
-
-  You'll also need to calculate the radar NIS.
+  Calculate the radar NIS.
   */
   
   VectorXd zvec = VectorXd(meas_package.raw_measurements_);
@@ -341,7 +343,6 @@ void UKF::UpdateRadar(MeasurementPackage meas_package) {
       z_pred += Zsig.col(i)*weights_(i);
   }
  
-
   VectorXd zdiff; 
   //calculate innovation covariance matrix S
   for(int i = 0; i<n_sig; i++){
